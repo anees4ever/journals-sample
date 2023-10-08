@@ -20,7 +20,7 @@ class App {
         self::$config= $config;
         self::$dbObject = new Database();
         $db = self::$dbObject->getConnection($config);
-        $db->exec("SET SESSION time_zone = '". $config["time_zone"] . "'");
+        $db->exec("SET SESSION time_zone = '". $config["time_zone_value"] . "'");
     }
 
     public static function db() {

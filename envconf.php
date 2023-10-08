@@ -9,6 +9,7 @@ $config= [
 
     //Server Timezone for PHP and MySQL
     'time_zone' => env("TIMEZONE", "Asia/Kolkata"),
+    'time_zone_value' => env("TIMEZONE_VALUE", "+5:30"),
 
     //Relative path to then index.php file(this) from the top domain
     "documentRoot" => env("DOCUMENT_ROOT_PATH", "/"),

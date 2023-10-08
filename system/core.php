@@ -47,7 +47,7 @@ class App {
             $sub_path= substr($path, strlen(self::$config['documentRoot']), strlen($path));
 
             //remoev the start backslash if
-            if($sub_path[0] == "/") $sub_path= substr($sub_path, 1, strlen($sub_path));
+            if($sub_path != "" && $sub_path[0] == "/") $sub_path= substr($sub_path, 1, strlen($sub_path));
             
             $pathSegments= explode("/", $sub_path);
 

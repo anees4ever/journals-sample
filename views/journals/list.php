@@ -97,8 +97,4 @@
 
     });
   }
-  function formatDate(date) {
-    var tempDate = new Date(date);
-    return [tempDate.getDate(), tempDate.getMonth() + 1, tempDate.getFullYear()].join('/');
-  }
 </script>

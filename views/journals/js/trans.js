@@ -86,18 +86,6 @@ function refreshTransTable() {
   }
 }
 
-function formatDate(date) {
-  var tempDate = new Date(date);
-  return [tempDate.getDate(), tempDate.getMonth() + 1, tempDate.getFullYear()].join('/');
-}
-
-function getToday() {
-  var tempDate = new Date();
-  var month= tempDate.getMonth() + 1;
-  var day= tempDate.getDate();
-  return tempDate.getFullYear() + "-" + (month > 9 ? "" : "0") + month  + "-" + (day > 9 ? "" : "0") + day;
-}
-
 function getTransactions() {
   var transactions= [];
 

@@ -93,7 +93,9 @@ function formatDate(date) {
 
 function getToday() {
   var tempDate = new Date();
-  return [tempDate.getFullYear(), tempDate.getMonth() + 1, tempDate.getDate()].join('-');
+  var month= tempDate.getMonth() + 1;
+  var day= tempDate.getDate();
+  return tempDate.getFullYear() + "-" + (month > 9 ? "" : "0") + month  + "-" + (day > 9 ? "" : "0") + day;
 }
 
 function getTransactions() {

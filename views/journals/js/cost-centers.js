@@ -44,6 +44,7 @@ function addCostCenterTable() {
       "remarks": $(".entry-cc-remarks", costCenterTable).val(),
       "type_name": $(".entry-cc-cost_type option:selected", costCenterTable).text(),
       "cost_center_name": $(".entry-cc-cost_center_id option:selected", costCenterTable).text(),
+      "invoices": [],
     };
 
     addCostCenter(costCenterTable, data);

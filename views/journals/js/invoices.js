@@ -39,7 +39,7 @@ function addInvoiceTable() {
     var data= {
       "invoice_type": $(".entry-invoice-invoice_type", invoiceTable).val(),
       "invoice_no": $(".entry-invoice-invoice_no", invoiceTable).val(),
-      "invoice_date": $(".entry-invoice-invoice_date", invoiceTable).val(getToday()),
+      "invoice_date": $(".entry-invoice-invoice_date", invoiceTable).val(),
       "invoice_amount": parseFloat($(".entry-invoice-invoice_amount", invoiceTable).val()),
       "type_name": $(".entry-invoice-invoice_type option:selected", invoiceTable).text(),
     };
@@ -49,7 +49,7 @@ function addInvoiceTable() {
     //clear entry
     $(".entry-invoice-invoice_type", invoiceTable).val("0").focus();
     $(".entry-invoice-invoice_no", invoiceTable).val("");
-    $(".entry-invoice-invoice_date", invoiceTable).val("");
+    $(".entry-invoice-invoice_date", invoiceTable).val(getToday());
     $(".entry-invoice-invoice_amount", invoiceTable).val("0");
 
   });

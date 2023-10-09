@@ -5,10 +5,27 @@ function toggleChildGrid(sender) {
 
 function addTransaction(data) {
   var newRow= $(transRowTemplate);
+  var costCenterTable= addCostCenterTable();
   $("#tblTrans tbody.trans").append(newRow);
-  $("#tblTrans tbody.trans").append(addCostCenterTable());
+  $("#tblTrans tbody.trans").append(costCenterTable);
 
-  $("select.entry-trans-trans_type", this).focus();
+
+  if(data != undefined) {
+    $(".entry-trans-trans_type", newRow).val(data.trans_type);
+    $(".entry-trans-account_code", newRow).val(data.account_code);
+    $(".entry-trans-account_id", newRow).val(data.account_id);
+    $(".entry-trans-trans_amount_dr", newRow).val(data.trans_type=="Dr" ? data.trans_amount : "0");
+    $(".entry-trans-trans_amount_cr", newRow).val(data.trans_type=="Cr" ? data.trans_amount : "0");
+
+    if(data.cost_centers != false && data.cost_centers.length > 0) {
+      for(var i in data.cost_centers) {
+        addCostCenter(costCenterTable, data.cost_centers[i]);
+      }
+    }
+  }
+
+  $("select.entry-trans-trans_type", newRow).focus();
+  
 
   refreshTransTable();
 }
@@ -71,7 +88,12 @@ function refreshTransTable() {
 
 function formatDate(date) {
   var tempDate = new Date(date);
-  return [tempDate.getMonth() + 1, tempDate.getDate(), tempDate.getFullYear()].join('/');
+  return [tempDate.getDate(), tempDate.getMonth() + 1, tempDate.getFullYear()].join('/');
+}
+
+function getToday() {
+  var tempDate = new Date();
+  return [tempDate.getFullYear(), tempDate.getMonth() + 1, tempDate.getDate()].join('-');
 }
 
 function getTransactions() {
@@ -89,6 +111,7 @@ function getTransactions() {
         "account_id": $(".entry-trans-account_id", row).val(),
         "trans_amount": $(".entry-trans-trans_type", row).val() == "Cr" ? $(".entry-trans-trans_amount_cr", row).val() : $(".entry-trans-trans_amount_dr", row).val(),
 
+        "account_name": $(".entry-trans-account_id option:selected", row).text(),
         "cost_centers": getCostCenters(row.next()),
       });
     }

@@ -22,9 +22,9 @@
 }
 </style>
 
-<script src="<?=App::$config['documentRoot'];?>/views/journals/js/trans.js"></script>
-<script src="<?=App::$config['documentRoot'];?>/views/journals/js/cost-centers.js"></script>
-<script src="<?=App::$config['documentRoot'];?>/views/journals/js/invoices.js"></script>
+<script src="<?=App::$config['documentRoot'];?>views/journals/js/trans.js"></script>
+<script src="<?=App::$config['documentRoot'];?>views/journals/js/cost-centers.js"></script>
+<script src="<?=App::$config['documentRoot'];?>views/journals/js/invoices.js"></script>
 
   <div class="table-responsive" id="tblTrans">
     <table class="table table-stripedx jambo_table mb-0" border="1">
@@ -237,13 +237,23 @@ var invoiceRowTemplate= '\
   <td class="gCellEx view-invoice-invoice_amount text-right ">0.00/-</td> \
 </tr> \
 ';
-            
+
+
+var journal_data= <?=$journal_id>0?json_encode($journal_data["transactions"]):"[]";?>
+
+
 $(document).ready(function(){
   $("#btnAddNewTran").on("click", function(){
     addTransaction();
   });
   
-  addTransaction();
+  if(journal_data.length > 0) {
+    for(var i in journal_data) {
+      addTransaction(journal_data[i]);
+    }
+  } else {
+    addTransaction();
+  }
 });
 
 </script>

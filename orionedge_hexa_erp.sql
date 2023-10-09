@@ -178,7 +178,7 @@ CREATE TABLE `journals` (
   `cost_center_data` text NOT NULL,
   `invoice_data` text NOT NULL,
   `created_at` datetime NOT NULL,
-  `modified_at` datetime NOT NULL
+  `modified_at` datetime NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

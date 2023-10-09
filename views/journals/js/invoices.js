@@ -39,21 +39,12 @@ function addInvoiceTable() {
     var data= {
       "invoice_type": $(".entry-invoice-invoice_type", invoiceTable).val(),
       "invoice_no": $(".entry-invoice-invoice_no", invoiceTable).val(),
-      "invoice_date": $(".entry-invoice-invoice_date", invoiceTable).val(),
+      "invoice_date": $(".entry-invoice-invoice_date", invoiceTable).val(getToday()),
       "invoice_amount": parseFloat($(".entry-invoice-invoice_amount", invoiceTable).val()),
-      "invoice_type_name": $(".entry-invoice-invoice_type option:selected", invoiceTable).text(),
+      "type_name": $(".entry-invoice-invoice_type option:selected", invoiceTable).text(),
     };
 
-    var invoiceRow= $(invoiceRowTemplate);
-    invoiceRow.data({"data": data});
-    $(".view-invoice-invoice_type", invoiceRow).html(data.invoice_type_name);
-    $(".view-invoice-invoice_no", invoiceRow).html(data.invoice_no);
-    $(".view-invoice-invoice_date", invoiceRow).html(formatDate(data.invoice_date));
-    $(".view-invoice-invoice_amount", invoiceRow).html(data.invoice_amount + "/-");
-
-    $(".invoice-table tbody.invoice", invoiceTable).append(invoiceRow);
-
-    refreshInvoiceTable();
+    addInvoice(invoiceTable, data);
 
     //clear entry
     $(".entry-invoice-invoice_type", invoiceTable).val("0").focus();
@@ -61,18 +52,32 @@ function addInvoiceTable() {
     $(".entry-invoice-invoice_date", invoiceTable).val("");
     $(".entry-invoice-invoice_amount", invoiceTable).val("0");
 
-    $(".invoice-table", invoiceTable).removeClass("d-none");
   });
 
   return invoiceTable;
 }
 
+function addInvoice(invoiceTable, data) {
+  var invoiceRow= $(invoiceRowTemplate);
+  invoiceRow.data({"data": data});
+  $(".view-invoice-invoice_type", invoiceRow).html(data.type_name);
+  $(".view-invoice-invoice_no", invoiceRow).html(data.invoice_no);
+  $(".view-invoice-invoice_date", invoiceRow).html(formatDate(data.invoice_date));
+  $(".view-invoice-invoice_amount", invoiceRow).html(data.invoice_amount + "/-");
+
+  $(".invoice-table tbody.invoice", invoiceTable).append(invoiceRow);
+  $(".invoice-table", invoiceTable).removeClass("d-none");
+
+  refreshInvoiceTable(invoiceTable);
+}
+
 function removeInvoiceRow(sender) {
   if(!confirm("Delete invoice?")) return false;
+  var parent= $(sender).parents('table.invoice-table');
   var row= $(sender).parents('tr.invoice-row');
   row.remove();
 
-  refreshInvoiceTable();
+  refreshInvoiceTable(parent);
 }
 
 function refreshInvoiceTable(row) {
@@ -105,6 +110,8 @@ function getInvoices(ccRow) {
       "invoice_no": row.data("data").invoice_no,
       "invoice_date": row.data("data").invoice_date,
       "invoice_amount": row.data("data").invoice_amount,
+
+      "type_name": row.data("data").type_name,
     });
   });
 

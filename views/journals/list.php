@@ -1,6 +1,3 @@
-<?php
-
-?>
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="">
@@ -12,7 +9,7 @@
             <h2>Journals</h2>
             <ul class="nav navbar-right panel_toolbox">
               <li>
-                <button onclick="window.location='<?=App::$config['documentRoot'];?>/journals/entry';" class="btn btn-sm btn-primary">
+                <button onclick="window.location='<?=App::$config['documentRoot'];?>journals/entry';" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus"></i>
                     New Journal
                 </button>
@@ -23,54 +20,44 @@
 
           <div class="x_content">
             <div class="table-responsive">
-              <table class="table table-striped jambo_table bulk_action">
+              <table class="table table-striped jambo_table" border="1">
                 <thead>
                   <tr class="headings">
-                    <th>
-                      <input type="checkbox" id="check-all" class="flat">
-                    </th>
-                    <th class="column-title">Invoice </th>
-                    <th class="column-title">Invoice Date </th>
-                    <th class="column-title">Order </th>
-                    <th class="column-title">Bill to Name </th>
-                    <th class="column-title">Status </th>
-                    <th class="column-title">Amount </th>
-                    <th class="column-title no-link last"><span class="nobr">Action</span>
-                    </th>
-                    <th class="bulk-actions" colspan="7">
-                      <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                    </th>
+                    <th width="10" class="column-title">SL </th>
+                    <th width="15%" class="column-title">Voucher Date </th>
+                    <th width="15%" class="column-title">Voucher Number </th>
+                    <th width="15%" class="column-title">Voucher Ref.No </th>
+                    <th width="30%" class="column-title">Company Name </th>
+                    <th width="15%" class="column-title text-right">Voucher Amount </th>
+                    <th width="10%" class="column-title no-link last text-center"><span class="nobr">Action</span></th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr class="even pointer">
-                    <td class="a-center ">
-                      <input type="checkbox" class="flat" name="table_records">
-                    </td>
-                    <td class=" ">121000040</td>
-                    <td class=" ">May 23, 2014 11:47:56 PM </td>
-                    <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                    <td class=" ">John Blank L</td>
-                    <td class=" ">Paid</td>
-                    <td class="a-right a-right ">$7.45</td>
-                    <td class=" last"><a href="#">View</a>
-                    </td>
-                  </tr>
-                  <tr class="odd pointer">
-                    <td class="a-center ">
-                      <input type="checkbox" class="flat" name="table_records">
-                    </td>
-                    <td class=" ">121000039</td>
-                    <td class=" ">May 23, 2014 11:30:12 PM</td>
-                    <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
-                    </td>
-                    <td class=" ">John Blank L</td>
-                    <td class=" ">Paid</td>
-                    <td class="a-right a-right ">$741.20</td>
-                    <td class=" last"><a href="#">View</a>
+
+                <?php 
+                  if(is_array($journals) && count($journals) > 0) {
+                    foreach($journals as $idx => $journal) { ?>
+                  <tr class="pointer">
+                    <td class="gCellEx "><?=$idx+1;?></td>
+                    <td class="gCellEx "><?=$journal['voucher_date'];?></td>
+                    <td class="gCellEx "><?=$journal['voucher_no'];?></td>
+                    <td class="gCellEx "><?=$journal['voucher_ref_no'];?></td>
+                    <td class="gCellEx "><?=$journal['company_name'];?></td>
+                    <td class="gCellEx text-right"><?=$journal['voucher_amt'];?>/-</td>
+                    <td class="gCellEx text-center last">
+                      <a href="<?= App::$config['documentRoot']; ?>journals/entry?journal_id=<?=1;?>" class="btn btn-primary btn-sm"> 
+                        <i class="fa fa-edit"></i> </a>
+                      <a href="#" class="btn btn-primary btn-sm" onclick="promptForDeletion(this, <?=$journal['id'];?>, '<?=$journal['voucher_no'];?>', '<?=$journal['voucher_date'];?>');"> 
+                        <i class="fa fa-trash"></i> </a>
                     </td>
                   </tr>
+                <?php
+                    }
+                  } else {
+                    ?><tr class="pointer"><td colspan="6"><span class="text-danger h5">No journal records found...</span></td><?php
+                  } ?>
+
                 </tbody>
               </table>
             </div>
@@ -83,3 +70,35 @@
   </div>
 </div>
 <!-- /page content -->
+
+<script>
+  function promptForDeletion(sender, id, voucher_no, voucher_date) {
+    if(!confirm("Delete voucher: " + voucher_no + ", dt." + formatDate(voucher_date) + "?")) {
+      return false;
+    }
+
+    showButtonProgress(sender);
+    
+    $.ajax({
+      url: '<?=App::$config["documentRoot"];?>journals/delete',
+      type: 'POST',
+      data: {
+        'id': id,    			
+      },
+      dataType: 'json',
+      success: function(response) {
+        if(response.result) {
+          window.location.reload();
+        } else {
+          hideButtonProgress(sender);
+          alert(response.message);
+        }
+      }
+
+    });
+  }
+  function formatDate(date) {
+    var tempDate = new Date(date);
+    return [tempDate.getDate(), tempDate.getMonth() + 1, tempDate.getFullYear()].join('/');
+  }
+</script>

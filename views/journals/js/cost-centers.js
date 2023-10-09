@@ -42,21 +42,11 @@ function addCostCenterTable() {
       "cost_center_id": $(".entry-cc-cost_center_id", costCenterTable).val(),
       "cost_amount": parseFloat($(".entry-cc-cost_amount", costCenterTable).val()),
       "remarks": $(".entry-cc-remarks", costCenterTable).val(),
-      "cost_type_name": $(".entry-cc-cost_type option:selected", costCenterTable).text(),
+      "type_name": $(".entry-cc-cost_type option:selected", costCenterTable).text(),
       "cost_center_name": $(".entry-cc-cost_center_id option:selected", costCenterTable).text(),
     };
 
-    var costRow= $(costCenterRowTemplate);
-    costRow.data({"data": data});
-    $(".view-cc-cost_center_code", costRow).html(data.cost_center_code);
-    $(".view-cc-cost_center_id", costRow).html(data.cost_center_name);
-    $(".view-cc-cost_amount", costRow).html(data.cost_amount + "/-");
-    $(".view-cc-remarks", costRow).html(data.remarks);
-
-    $(".cost-center-table tbody.cc", costCenterTable).append(costRow);
-    $(".cost-center-table tbody.cc", costCenterTable).append(addInvoiceTable());
-
-    refreshCCTable();
+    addCostCenter(costCenterTable, data);
 
     //clear entry
     $(".entry-cc-cost_type", costCenterTable).val("0").focus();
@@ -64,21 +54,43 @@ function addCostCenterTable() {
     $(".entry-cc-cost_center_id", costCenterTable).val("0");
     $(".entry-cc-cost_amount", costCenterTable).val("0");
     $(".entry-cc-remarks", costCenterTable).val("");
-
-    $(".cost-center-table", costCenterTable).removeClass("d-none");
   });
 
 
   return costCenterTable;
 }
 
+function addCostCenter(costCenterTable, data) {
+  var costRow= $(costCenterRowTemplate);
+  var invoiceTable= addInvoiceTable();
+  costRow.data({"data": data});
+  $(".view-cc-cost_center_code", costRow).html(data.cost_center_code);
+  $(".view-cc-cost_center_id", costRow).html(data.cost_center_name);
+  $(".view-cc-cost_amount", costRow).html(data.cost_amount + "/-");
+  $(".view-cc-remarks", costRow).html(data.remarks);
+
+  $(".cost-center-table tbody.cc", costCenterTable).append(costRow);
+  $(".cost-center-table tbody.cc", costCenterTable).append(invoiceTable);
+
+  $(".cost-center-table", costCenterTable).removeClass("d-none");
+
+  if(data.invoices != false && data.invoices.length > 0) {
+    for(var i in data.invoices) {
+      addInvoice(invoiceTable, data.invoices[i]);
+    }
+  }
+
+  refreshCCTable(costCenterTable);
+}
+
 function removeCCRow(sender) {
   if(!confirm("Delete cost center?")) return false;
+  var parent= $(sender).parents('table.cost-center-table');
   var row= $(sender).parents('tr.cc-row');
   row.next().remove();
   row.remove();
 
-  refreshCCTable();
+  refreshCCTable(parent);
 }
 
 function refreshCCTable(row) {
@@ -112,6 +124,9 @@ function getCostCenters(transRow) {
       "cost_center_id": row.data("data").cost_center_id,
       "cost_amount": row.data("data").cost_amount,
       "remarks": row.data("data").remarks,
+
+      "type_name": row.data("data").type_name,
+      "cost_center_name": row.data("data").cost_center_name,
 
       "invoices": getInvoices(row.next()),
     });

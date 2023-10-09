@@ -1,6 +1,3 @@
-<?php
-
-?>
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="">
@@ -11,28 +8,25 @@
           <div class="x_title">
             <h2>Journal Entry</h2>
             <div class="nav navbar-right panel_toolbox">
-              <a href="<?= App::$config['documentRoot']; ?>/journals" class="btn btn-secondary btn-sm"> <i class="fa fa-close"></i> Cancel</a>
+              <a href="<?= App::$config['documentRoot']; ?>journals" class="btn btn-secondary btn-sm"> <i class="fa fa-close"></i> Cancel</a>
               <button type="button" id="btnSaveJournal" class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Save Voucher</button>
             </div>
             <div class="clearfix"></div>
           </div>
 
           <div class="x_content">
-            
 
             <div id="entry-errors"></div>
 
             <form class="form-label-left input_mask">
               
-
+              <input type="hidden" id="journalID" value="<?=$journal_id;?>" >
               <?php include("entry_top.php"); ?>
               <?php include("entry_table.php"); ?>
               <?php include("entry_bottom.php"); ?>
 
 
             </form>
-
-            
 
 <script>
   $(document).ready(function(){
@@ -50,16 +44,9 @@
         errors+= "Company is not selected.<br />";
       }
 
-      if(errors != "") {
-        $("#entry-errors").html('<div class="alert alert-danger alert-dismissible " role="alert"> \
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> \
-                <strong>' + errors + '</strong> \
-        </div>');
-        return false;
-      }
 
       var data= {
-        "id": 0,
+        "id": $("#journalID").val(),
         "voucher_no": $("#txtVoucherNo").val(),
         "voucher_date": $("#txtVoucherDate").val(),
         "cashbook_affected": $("#chEffectCB").prop("checked") ? "T" : "F",
@@ -77,8 +64,40 @@
 
         "transactions": getTransactions(),
       };
-          
-      console.log(data);
+
+      if(data["transactions"].length == 0) {
+        errors+= "No Journal Records entered.<br />";
+      }
+
+
+      if(errors != "") {
+        $("#entry-errors").html('<div class="alert alert-danger alert-dismissible " role="alert"> \
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> \
+                <strong>' + errors + '</strong> \
+        </div>');
+        return false;
+      }
+
+
+      showButtonProgress("btnSaveJournal");
+      $.ajax({
+    		url: '<?=App::$config["documentRoot"];?>journals/save',
+    		type: 'POST',
+    		data: {
+    			'data': data,    			
+    		},
+    		dataType: 'json',
+    		success: function(response) {
+          if(response.result) {
+            window.location= "<?= App::$config['documentRoot']; ?>journals";
+          } else {
+            hideButtonProgress("btnSaveJournal");
+            alert(response.message);
+          }
+    		}
+
+    	});
+
     });
   });
 

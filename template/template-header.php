@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <?php
-    $templateRoot= App::$config['documentRoot']."/template";
+    $templateRoot= App::$config['documentRoot']."template";
     ?>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -11,7 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Journal Entry</title>
-
+    
+    <link rel="icon" type="image/png" href="https://www.orionedge.com/wp-content/themes/valid/theme/img/favicon.png">
     <!-- Bootstrap -->
     <link href="<?=$templateRoot;?>/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -48,8 +49,8 @@
               <div class="menu_section">
                 <h3>Menu</h3>
                 <ul class="nav side-menu">
-                  <li class="x-active"><a href="<?=App::$config['documentRoot'];?>/journals"><i class="fa fa-home"></i> Journals</a></li>
-                  <li><a href="<?=App::$config['documentRoot'];?>/journals/entry"><i class="fa fa-plus"></i> New Journal</a></li>
+                  <li class="x-active"><a href="<?=App::$config['documentRoot'];?>journals"><i class="fa fa-home"></i> Journals</a></li>
+                  <li><a href="<?=App::$config['documentRoot'];?>journals/entry"><i class="fa fa-plus"></i> New Journal</a></li>
                 </ul>
               </div>
             </div>

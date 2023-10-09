@@ -55,7 +55,7 @@
                 <?php
                     }
                   } else {
-                    ?><tr class="pointer"><td colspan="6"><span class="text-danger h5">No journal records found...</span></td><?php
+                    ?><tr class="pointer"><td colspan="7"><span class="text-danger h5">No journal records found...</span></td><?php
                   } ?>
 
                 </tbody>

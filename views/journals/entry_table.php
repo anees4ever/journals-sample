@@ -253,6 +253,7 @@ $(document).ready(function(){
     }
   } else {
     addTransaction();
+    addTransaction();
   }
 });
 

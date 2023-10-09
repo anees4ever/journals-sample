@@ -67,6 +67,8 @@
 
       if(data["transactions"].length == 0) {
         errors+= "No Journal Records entered.<br />";
+      } else if($("#rowDifference").is(":visible")) {
+        errors+= "Voucher totals do not match [" + $("#labelTotalDr").text() + " &NotEqual; " + $("#labelTotalCr").text() + "].<br />";
       }
 
 

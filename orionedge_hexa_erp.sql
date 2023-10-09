@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 08, 2023 at 11:58 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Host: 127.0.0.1:3306
+-- Generation Time: Oct 09, 2023 at 05:59 PM
+-- Server version: 10.6.14-MariaDB-cll-lve
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -173,12 +173,12 @@ CREATE TABLE `journals` (
   `department_id` int(11) NOT NULL,
   `voucher_amt` double(23,2) NOT NULL DEFAULT 0.00,
   `voucher_narr` text NOT NULL,
-  `voucher_narr_arabic` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `voucher_narr_arabic` text CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `transaction_data` text NOT NULL,
   `cost_center_data` text NOT NULL,
   `invoice_data` text NOT NULL,
   `created_at` datetime NOT NULL,
-  `modified_at` datetime NULL
+  `modified_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -189,6 +189,7 @@ CREATE TABLE `journals` (
 
 CREATE TABLE `journals_cost_centers` (
   `id` int(11) NOT NULL,
+  `journal_id` int(11) NOT NULL,
   `trans_id` int(11) NOT NULL,
   `cost_type` int(11) NOT NULL,
   `cost_center_code` varchar(20) NOT NULL,
@@ -205,6 +206,7 @@ CREATE TABLE `journals_cost_centers` (
 
 CREATE TABLE `journals_invoices` (
   `id` int(11) NOT NULL,
+  `journal_id` int(11) NOT NULL,
   `cost_center_id` int(11) NOT NULL,
   `invoice_type` int(11) NOT NULL,
   `invoice_no` varchar(100) NOT NULL,

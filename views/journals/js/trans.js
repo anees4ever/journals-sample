@@ -22,6 +22,11 @@ function addTransaction(data) {
         addCostCenter(costCenterTable, data.cost_centers[i]);
       }
     }
+  } else {
+    if(!newRow.is(":nth-child(1)")) {//not the first record. switch trn type accordingly
+      var tran_type= $(".entry-trans-trans_type", newRow.prev().prev()).val();
+      $(".entry-trans-trans_type", newRow).val(tran_type == "Cr" ? "Dr" : "Cr");
+    }
   }
 
   $("select.entry-trans-trans_type", newRow).focus();

@@ -21,7 +21,7 @@ class JournalTransModel extends AbstractModel
         $this->primary_key = "id";
 
         $this->selection_fields = "JT.id, JT.journal_id, JT.trans_type, JT.account_code, JT.account_id, JT.trans_amount, A.account_name ";
-        $this->join_sql = " LEFT JOIN account_heads A ON A.id=JT.id ";
+        $this->join_sql = " LEFT JOIN account_heads A ON A.id=JT.account_id ";
         $this->order_by = "JT.id ASC";
     }
 
